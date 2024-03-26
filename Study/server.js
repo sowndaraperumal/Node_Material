@@ -1,18 +1,15 @@
-
-
-const fs=require('node:fs')
+const fsProsime=require('fs').promises
 const path = require('path')
 
-
-fs.readFile(path.join(__dirname,'Files','start.txt'),'utf8', (err, data) => {
-  if (err) throw err;
+const fileOps =async()=>{
+  try {
+  const data= await fsProsime.readFile(path.join(__dirname,'Files','start.txt'),'utf8')
   console.log(data);
-}); 
-fs.writeFile(path.join(__dirname,'Files','write.txt'),'hi pattu', (err) => {
-  if (err) throw err;
-  console.log('writing is complete');
-});
-process.on('uncaughtException', err=>{
-  console.error(`some error: ${err}`);
-  process.exit(1);
-})
+  await fsProsime.writeFile(path.join(__dirname,'Files','write.txt'),"hi ammu");
+  await fsProsime.appendFile(path.join(__dirname,'Files','write.txt'),"\n\n poda");
+  await fsProsime.rename(path.join(__dirname,'Files','write.txt'),path.join(__dirname,'Files','rename.txt'));
+  } catch (error) {
+    console.error(error)
+  }
+}
+fileOps()
